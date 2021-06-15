@@ -1,5 +1,5 @@
 # 【UE·底层篇】一文搞懂StaticClass、GetClass和ClassDefaultObject
- 学UE也有一段时间了，关于**StaticClass**和**GetClass**一直搞得不太懂。看别人代码时也莫名其妙，为什么这里用StaticClass？为什么那里用GetClass？  这都是啥玩意？
+ 学UE也有一段时间了，关于**StaticClass**和**GetClass**一直搞得不太懂。看别人代码时也莫名其妙，为什么这里用StaticClass？为什么那里用GetClass？  这都是啥玩意？  
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210614213815298.jpg#pic_center)
 
 
@@ -56,7 +56,7 @@ auto result = static1Class == static2Class;
 UE_LOG(LogTemp, Warning, TEXT("Is StaticClass Same: %d"), result);
 ```
 
-再讲StaticClass的另一个功能，帮助大家更加理解StaticClass。先来看UObject、UClass、Actor类图（虽然中间有一些类名大家可能没看过但是没有关西）：
+再讲StaticClass的另一个功能，帮助大家更加理解StaticClass。先来看UObject、UClass、Actor类图（虽然中间有一些类名大家可能没看过但是没有关西）：  
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615145913677.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)
 
 现在又有个问题来了，我现在有一个**UClass，如何知道这个UClass和另一个UClass是不是继承关系？** 直接转类型判断吗？不对，看上面那张图，UClass是没有子类的。那怎么办？答案是**UClass存储了它要描述的类的父类的StaticClass。** 有点绕，我举例说明一下。我现在有个MyActor类的UClass，想知道MyActor是不是UObject的子类，我就这么做：
@@ -85,11 +85,11 @@ bool result = myActor->IsA<UObject>();
 
 #### ClassDefaultObject
 
-**GetClass**和**GetStaticClass**都明白了之后，理解**ClassDefaultObject** 就简单多了。ClassDefaultObject（简称CDO），类默认对象。通过CDO我可以拿到**一个UObject初始化时的值**。虽然CDO有个Default默认，但是用默认去描述它的功能不是很准确。回到我们创建的类MyActor，给它添加一个外部可以修改变量**testIntValue**，默认值1:
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615135825711.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)
-对于两个蓝图分别修改，一个20，另一个10：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615140019393.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615135947211.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)
-然后在BeginPlay写下测试代码：
+**GetClass**和**GetStaticClass**都明白了之后，理解**ClassDefaultObject** 就简单多了。ClassDefaultObject（简称CDO），类默认对象。通过CDO我可以拿到**一个UObject初始化时的值**。虽然CDO有个Default默认，但是用默认去描述它的功能不是很准确。回到我们创建的类MyActor，给它添加一个外部可以修改变量**testIntValue**，默认值1:  
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615135825711.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)  
+对于两个蓝图分别修改，一个20，另一个10：  
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615140019393.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615135947211.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)  
+然后在BeginPlay写下测试代码：  
 
 ```
 //先修改值再获取ClassDefaultObject
@@ -111,11 +111,12 @@ UE_LOG(LogTemp, Warning, TEXT("StaticDefaultObject int: %d"), staticDefaultInt);
 
 #### GetClass()->GetClass()->GetClass()
 
-最后来点丧心病狂的东西。上面我画了一张类图，UClass也是UObject的子类。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615145913677.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)
+最后来点丧心病狂的东西。上面我画了一张类图，UClass也是UObject的子类。  
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615145913677.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)  
 一个UObject实例可以调用GetClass()来获得它的UClass，那么对UClass调用GetClass()会出现什么结果呢？在MyActor里我这么写：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615141626426.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)结果如下：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615141730515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615141626426.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)  
+结果如下：  
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20210615141730515.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2o3NTY5MTUzNzA=,size_16,color_FFFFFF,t_70#pic_center)  
 **调用第一次GetClass和第二次产生的结果不一样，第三次以后结果是一样的了**。至于为什么会这样我不知道，网上也没查出个所以然来，如果有谁弄懂请告诉我，我这里就先记录下来。
 
 ***
