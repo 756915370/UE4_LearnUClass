@@ -2,6 +2,7 @@
 UClassLearning/Saved/*
 UClassLearning/Binaries/*
 UClassLearning/.vs/*
+UClassLearning/.idea/*
 
 # Compiled source files for the engine to use
 UClassLearning/Intermediate/*
